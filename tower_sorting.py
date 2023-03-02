@@ -28,15 +28,11 @@ class TowerSorting(Problem):
         # Loop through all pairs of towers
         for i in range(self.num_towers):
             for j in range(self.num_towers):
-                # check if the pair of towers is distrinct
+                # check if the pair of towers is distinct
                 if i != j:
-                     # check if the source tower is not empty
-                     if len(state.grid[i]) > 0:
-                        # check if the target tower is either empty 
-                        # or its top disk has a larger size
-                        # than the disk to be moved
-                        if len(state.grid[j]) == 0 or state.grid[i][-1] == state.grid[j][-1]:
-                            actions.append((i, j))
+                    # check if the destination tower can handle another disk and that the source tower is not empty
+                    if len(state.grid[j]) < self.max_tower_size and len(state.grid[i]) > 0:
+                        actions.append((i, j))
         return actions
 
     def result(self, state, action):
@@ -57,8 +53,14 @@ class TowerSorting(Problem):
                 # Check if all disks in the tower are of the same color
                 if len(set(tower)) != 1:
                     return False
-        # Return True if all towers are uniform and complete
+        # Return True if all towers are uniform, unique and complete
+
+
+
+
+
         return True
+
 
     def path_cost(self, c, state1, action, state2):
         # 1 for each action
@@ -130,7 +132,7 @@ if __name__ == "__main__":
     problem = TowerSorting(init_state)
     # Example of search
     start_timer = time.perf_counter()
-    node, nb_explored, remaining_nodes = depth_first_tree_search(problem)
+    node, nb_explored, remaining_nodes = breadth_first_graph_search(problem)
     end_timer = time.perf_counter()
 
     # Example of print
@@ -149,7 +151,7 @@ class TestTowerSorting(unittest.TestCase):
 
     def test_initial_state(self):
         ts = TowerSorting(3)
-        state = ts.initial_state()
+        state3 = ts.initial_state()
         expected = [[3, 2, 1], [], []]
         self.assertEqual(state.grid, expected)
 

@@ -46,20 +46,22 @@ class TowerSorting(Problem):
         return new_state
 
     def goal_test(self, state):
+
         # Loop through all towers
         for tower in state.grid:
             # check if the tower is not empty
             if len(tower) > 0:
-                # Check if all disks in the tower are of the same color
-                if len(set(tower)) != 1:
+                # Check if all disks in the tower are of the same color and that each column is unique
+
+                if len(set(tower)) != 1 or tower == [] or len(tower) != size:
                     return False
         # Return True if all towers are uniform, unique and complete
 
-
-
-
-
         return True
+
+
+
+
 
 
     def path_cost(self, c, state1, action, state2):
